@@ -33,6 +33,18 @@ public class Map {
 
     public void loadBinary(){
         Pixmap pixmap = new Pixmap(Gdx.files.internal("data/levels.png"));
-        
+        tiles = new int[pixmap.getWidth()][pixmap.getHeight()];
+        for(int y = 0; y < 35; y++){
+            for(int x=0; x<150;x++){
+                int pix = (pixmap.getPixel(x, y) >>> 8) & 0xffffff;
+                if(match(pix, START)){
+                    Dispenser dispenser = new Dispenser(x, pixmap.getHeight() - 1 - y);
+                    dispensers.add(dispenser);
+                    activeDispenser = dispenser;
+                    bob = new Bob(this, activeDispenser.bounds.x, activeDispenser.bounds.y);
+                    cube.state=Cube.DEAD;
+                }
+            }
+        }
     }
 }
